@@ -22,7 +22,7 @@ jobs:
       - name: Get Latest Version
         id: version
         run: |
-          LATEST_VERSION=$(curl -s https://hub.docker.com/v2/repositories/dataquad123/global-User-prod/tags/ | jq -r '.results[].name' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
+          LATEST_VERSION=$(curl -s https://hub.docker.com/v2/repositories/dataquad123/global-user-prod/tags/ | jq -r '.results[].name' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
           
           if [ -z "$LATEST_VERSION" ]; then
             NEW_VERSION="1.0.0"
@@ -49,21 +49,21 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t dataquad123/global-User-dev:${{ env.IMAGE_TAG }} .
-          docker tag dataquad123/global-User-dev:${{ env.IMAGE_TAG }} dataquad123/global-User-prod:latest
+          docker build -t dataquad123/global-user-dev:${{ env.IMAGE_TAG }} .
+          docker tag dataquad123/global-user-dev:${{ env.IMAGE_TAG }} dataquad123/global-user-prod:latest
 
       - name: Push Docker Image
         run: |
-          docker push dataquad123/global-User-prod:${{ env.IMAGE_TAG }}
-          docker push dataquad123/global-User-prod:latest
+          docker push dataquad123/global-user-prod:${{ env.IMAGE_TAG }}
+          docker push dataquad123/global-user-prod:latest
 
       - name: Delete Old Images (Keep Only Last 10)
         run: |
-          OLD_TAGS=$(curl -s -u ${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }} "https://hub.docker.com/v2/repositories/dataquad123/global-User-prod/tags/" \
+          OLD_TAGS=$(curl -s -u ${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }} "https://hub.docker.com/v2/repositories/dataquad123/global-user-prod/tags/" \
             | jq -r '.results[].name' \
             | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' \
             | sort -V | head -n -10)
 
           for TAG in $OLD_TAGS; do
-            curl -X DELETE -u ${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }} "https://hub.docker.com/v2/repositories/dataquad123/global-User-prod/tags/$TAG/"
+            curl -X DELETE -u ${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }} "https://hub.docker.com/v2/repositories/dataquad123/global-user-prod/tags/$TAG/"
           done
