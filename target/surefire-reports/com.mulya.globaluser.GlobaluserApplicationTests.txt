@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.mulya.globaluser.GlobaluserApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.17 s -- in com.mulya.globaluser.GlobaluserApplicationTests
